@@ -1,3 +1,5 @@
+# -*- Makefile -*-
+
 NAME = cub3d
 SRC = *.c
 OBJ = $(SRC:.c=.o)
@@ -5,13 +7,15 @@ GNL = libft/get_next_line
 FLGS = -Wall -Wextra -Werror
 MLX = -l mlx -lGL
 
-$(NAME):
+all : $(NAME)
+
+$(NAME): $(OBJ)
 	make -C mlx
 	make -C libft
-	gcc $(SRC) $(FLGS) -c $(MLX)
 	gcc $(OBJ) -o $(NAME) libft/libft.a mlx/libmlx.a -lXext -lX11 -lm
 
-all : $(NAME)
+%.o: %.c
+    gcc $(FLGS) -c $< -o $@
 
 clean :
 	make clean -C libft
