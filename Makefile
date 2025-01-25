@@ -1,28 +1,36 @@
-# -*- Makefile -*-
+NAME =	cub3d
+S_DIR =	src/
+SRC =	bonus.c \
+		checks.c \
+		find_orien.c \
+		loop_utility.c \
+		main.c \
+		movements.c \
+		norm_utility.c \
+		parsing.c \
+		ray_casting.c \
+		spiral.c \
+		utility.c
 
-NAME = cub3d
-SRC = *.c
-OBJ = $(SRC:.c=.o)
-GNL = libft/get_next_line
-FLGS = -Wall -Wextra -Werror
-MLX = -l mlx -lGL
+O_DIR =	obj/
+OBJ	=	$(addprefix $(O_DIR),$(SRC:%.c=%.o))
+FLGS =	-Wall -Wextra -Werror
+LIBS =	libs/libft.a \
+		libs/libmlx_Linux.a
 
 all : $(NAME)
 
 $(NAME): $(OBJ)
-	make -C mlx
-	make -C libft
-	gcc $(OBJ) -o $(NAME) libft/libft.a mlx/libmlx.a -lXext -lX11 -lm
+	gcc $(OBJ) -o $(NAME) $(LIBS) -lXext -lX11 -lm
 
-%.o: %.c
-    gcc $(FLGS) -c $< -o $@
+$(O_DIR)%.o: $(S_DIR)%.c
+	mkdir -p $(O_DIR)
+	gcc $(FLGS) -c $< -o $@
 
 clean :
-	make clean -C libft
-	rm -rf $(OBJ)
+	rm -rf $(O_DIR)
 
 fclean : clean
-	make fclean -C libft
 	rm -rf $(NAME)
 
 re : fclean all
